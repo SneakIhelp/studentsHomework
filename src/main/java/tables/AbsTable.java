@@ -9,8 +9,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public abstract class AbsTable {
-    private String tableName;
-    private Map<String, String> columns;
+    protected String tableName;
+    protected Map<String, String> columns;
     IDBConnector db;
 
     public AbsTable(String tableName) {
