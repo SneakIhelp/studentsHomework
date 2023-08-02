@@ -1,13 +1,9 @@
 package tables;
 
-import db.MySQLConnector;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 
-public class StudentTable extends AbsTable{
+public class StudentTable extends AbsTable {
     public StudentTable(String tableName) {
         super(tableName);
     }

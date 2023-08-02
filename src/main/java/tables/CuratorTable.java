@@ -1,10 +1,5 @@
 package tables;
 
-import db.MySQLConnector;
-
-import java.util.HashMap;
-import java.util.Map;
-
 public class CuratorTable extends AbsTable {
     public CuratorTable(String tableName) {
         super(tableName);

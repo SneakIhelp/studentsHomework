@@ -6,27 +6,28 @@ import settings.PropertiesReader;
 import java.sql.*;
 import java.util.Map;
 
-public class MySQLConnector implements IDBConnector{
+public class MySQLConnector implements IDBConnector {
     private static Connection connection = null;
     private static Statement statement = null;
 
-    public MySQLConnector(){
+    public MySQLConnector() {
         connect();
     }
-    private void connect(){
+
+    private void connect() {
         ISettings reader = new PropertiesReader();
         Map<String, String> settings = reader.read();
-        if (connection == null){
+        if (connection == null) {
             try {
                 connection = DriverManager
                         .getConnection(settings.get("url") + "/" + settings.get("db_name"),
                                 settings.get("db_username"),
                                 settings.get("db_password"));
-            } catch (SQLException e){
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-        if(statement == null){
+        if (statement == null) {
             try {
                 statement = connection.createStatement();
             } catch (SQLException e) {
@@ -38,15 +39,15 @@ public class MySQLConnector implements IDBConnector{
     public void executeRequest(String response) {
         try {
             statement.execute(response);
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public ResultSet executeRequestWithAnswer(String response){
+    public ResultSet executeRequestWithAnswer(String response) {
         try {
             return statement.executeQuery(response);
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
@@ -56,14 +57,14 @@ public class MySQLConnector implements IDBConnector{
         if (statement != null) {
             try {
                 statement.close();
-            } catch (SQLException e){
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-        if (connection != null){
+        if (connection != null) {
             try {
                 connection.close();
-            } catch (SQLException e){
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
