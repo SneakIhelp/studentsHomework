@@ -9,8 +9,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public abstract class AbsTable {
-    protected String tableName;
-    protected Map<String, String> columns;
+    public String tableName;
+    public Map<String, String> columns;
     IDBConnector db;
 
     public AbsTable(String tableName) {
@@ -18,12 +18,25 @@ public abstract class AbsTable {
         db = new MySQLConnector();
     }
 
+
+    public int getCount() {
+        final String sqlRequest = String.format("SELECT COUNT(*) FROM %s", tableName);
+        ResultSet rs = db.executeRequestWithAnswer(sqlRequest);
+        int count = 0;
+        try {
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return count;
+    }
+
     public void create(Map<String, String> columns) {
         this.columns = columns;
         String sqlRequest = String.format("CREATE TABLE %s (%s)", this.tableName, convertMapColumnsToString());
-        db = new MySQLConnector();
         db.executeRequest(sqlRequest);
-        db.close();
     }
 
     private String convertMapColumnsToString() {
@@ -31,24 +44,5 @@ public abstract class AbsTable {
                 .map((Map.Entry entry) -> String.format("%s %s", entry.getKey(), entry.getValue()))
                 .collect(Collectors.joining(", "));
         return result;
-    }
-
-    public void selectAll() {
-        db = new MySQLConnector();
-        final String sqlRequest = String.format("SELECT * FROM %s", tableName);
-        ResultSet rs = db.executeRequestWithAnswer(sqlRequest);
-        try {
-            int columns = rs.getMetaData().getColumnCount();
-            while (rs.next()) {
-                for (int i = 1; i <= columns; i++) {
-                    System.out.print(rs.getString(i) + "\t");
-                }
-                System.out.println();
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        } finally {
-            db.close();
-        }
     }
 }

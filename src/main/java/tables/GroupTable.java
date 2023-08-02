@@ -1,12 +1,33 @@
 package tables;
 
+import db.MySQLConnector;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class GroupTable extends AbsTable{
     public GroupTable(String tableName) {
         super(tableName);
-        columns = new HashMap<>(Map.of("id", "INT", "name", "VARCHAR(255)", "id_curator", "INT"));
+    }
+
+    public void selectAllWithCurator() {
+        final String sqlRequest = String.format("SELECT g.*, c.fio AS curator_name " +
+                "FROM %s g " +
+                "JOIN CuratorTable c ON g.id_curator = c.id", tableName);
+        ResultSet rs = db.executeRequestWithAnswer(sqlRequest);
+        try {
+            int columns = rs.getMetaData().getColumnCount();
+            while (rs.next()) {
+                for (int i = 1; i <= columns; i++) {
+                    System.out.print(rs.getString(i) + "\t");
+                }
+                System.out.println();
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 
     public void insert(int id, String name, int id_curator) {
