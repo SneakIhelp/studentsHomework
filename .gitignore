@@ -10,14 +10,5 @@ target/
 # Eclipse
 .settings/
 
-# NetBeans
-/nbproject/
-/build/
-/nbbuild/
-/nbdist/
-
-# Visual Studio Code
-.vscode/
-
 # Mac OS
 .DS_Store
