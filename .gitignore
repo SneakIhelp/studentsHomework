@@ -7,8 +7,5 @@ target/
 *.iws
 *.ipr
 
-# Eclipse
-.settings/
-
 # Mac OS
 .DS_Store
